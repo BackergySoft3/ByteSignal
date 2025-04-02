@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chatroom</title>
+    <!-- Linking to external Google Fonts for 'Roboto' -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Corrected path for the CSS file -->
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div id="chat-room">
+      <!-- Input for the username -->
+      <input id="username" placeholder="Enter your name" />
+      <!-- Messages container -->
+      <div id="messages"></div>
+      <!-- Input for the message -->
+      <input id="message" placeholder="Type a message" />
+      <!-- Send button -->
+      <button id="send">Send</button>
+    </div>
+
+    <!-- Corrected path for the script file -->
+    <script src="/socket.io/socket.io.js"></script> <!-- Socket.io client -->
+    <script src="/script.js"></script>
+  </body>
+</html>
