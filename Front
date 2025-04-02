@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Chat</title>
+    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-database.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            text-align: center;
+        }
+        #chat-container {
+            width: 60%;
+            margin: auto;
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+        }
+        #chat {
+            border: 1px solid #333;
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
+            background: #222;
+            border-radius: 5px;
+        }
+        input, button {
+            margin: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            font-size: 16px;
+        }
+        input {
+            background: #333;
+            color: #fff;
+            width: 70%;
+        }
+        button {
+            background: #ff4c4c;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #ff3333;
+        }
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <h2>Web Chat Room</h2>
+        <input type="text" id="username" placeholder="Enter your name" required>
+        <button onclick="joinChat()">Join</button>
+        <div id="chat" style="display: none;"></div>
+        <input type="text" id="message" placeholder="Type a message...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            databaseURL: "YOUR_DATABASE_URL",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        let username = "";
+
+        function joinChat() {
+            username = document.getElementById("username").value;
+            if (username.trim() !== "") {
+                document.getElementById("chat").style.display = "block";
+            }
+        }
+
+        function sendMessage() {
+            const message = document.getElementById("message").value;
+            if (message.trim() !== "") {
+                db.ref("messages").push({ name: username, text: message });
+                document.getElementById("message").value = "";
+            }
+        }
+
+        db.ref("messages").on("child_added", snapshot => {
+            const msg = snapshot.val();
+            document.getElementById("chat").innerHTML += `<p><strong>${msg.name}:</strong> ${msg.text}</p>`;
+        });
+    </script>
+</body>
+</html>
